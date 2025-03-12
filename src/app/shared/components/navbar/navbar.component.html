@@ -1,0 +1,52 @@
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="https://dinet.com.pe/">
+      <img
+        src="../../../../assets/logo-login.png"
+        height="140"
+        width="150"
+        alt="dinet"
+        srcset=""
+      />
+    </a>
+
+    <a
+      role="button"
+      class="navbar-burger color-black"
+      aria-label="menu"
+      aria-expanded="false"
+      data-target="navbarBasicExample"
+      (click)="toggleNavbar()"
+      [class.is-active]="navbarOpen"
+    >
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div
+    id="navbarBasicExample"
+    class="navbar-menu"
+    [class.is-active]="navbarOpen"
+  >
+    <div class="navbar-end">
+      <a class="navbar-item" (click)="goToBack()"> Ordenes </a>
+      <a class="navbar-item"> Administración </a>
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <div class="buttons">
+          <a class="button is-light is-link" (click)="goToBack()">
+            <strong>Regresar</strong>
+          </a>
+          <a class="button is-light is-danger" (click)="logout()">
+            <strong>Salir</strong>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

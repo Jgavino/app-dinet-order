@@ -1,0 +1,200 @@
+<div class="header-content pt-60 pb-60 text-center">
+  <p class="title mb-2">Lista de Ordenes</p>
+</div>
+<div class="body-content pb-5 mb-4">
+  <div class="columns is-multiline v-centered mx-1">
+    <div class="field column is-2">
+      <label class="label">Nro de Orden</label>
+      <p class="control has-icons-left has-icons-right ml-3">
+        <input
+          class="input"
+          type="text"
+          placeholder="ORD-2025000006"
+          [(ngModel)]="orderNumber"
+          (input)="searchOrderNumber()"
+        />
+        <span class="icon is-left">
+          <i class="fas fa-pencil"></i>
+        </span>
+      </p>
+    </div>
+    <div class="field column is-2">
+      <label class="label">Fecha Inicio</label>
+      <p class="control has-icons-left is-expanded">
+        <input
+          class="date"
+          type="date"
+          placeholder="date"
+          [(ngModel)]="startDate"
+        />
+      </p>
+    </div>
+    <div class="field column is-2">
+      <label class="label">Fecha Fin</label>
+      <p class="control has-icons-left is-expanded">
+        <input
+          class="date"
+          type="date"
+          placeholder="date"
+          [(ngModel)]="endDate"
+        />
+      </p>
+    </div>
+    <div>
+      <button
+        class="button is-link mt-100 mx-1"
+        (click)="getAllOrders(orderNumber, startDate, endDate)"
+        [disabled]="!orderNumber && !startDate && !endDate"
+        title="Buscar"
+      >
+        <span class="icon is-left">
+          <i class="fas fa-search"></i>
+        </span>
+      </button>
+      <button
+        class="button is-primary mt-100 mx-1"
+        (click)="createOrder()"
+        title="Crear orden"
+      >
+        <span class="icon is-left">
+          <i class="fas fa-plus"></i>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="columns v-centered mx-1">
+    <div class="colums is-12">
+      <div class="table-wrapper has-mobile-cards">
+        <table class="table is-fullwidth">
+          <thead>
+            <tr>
+              <th class="text-space-nowarp text-center">#</th>
+              <th class="text-space-nowarp text-center">Nro de Orden</th>
+              <th class="text-space-nowarp text-center">Cliente</th>
+              <th class="text-space-nowarp text-center">Total</th>
+              <th class="text-space-nowarp text-center">Estado</th>
+              <th class="text-space-nowarp text-center">Fecha de Registro</th>
+              <th class="text-space-nowarp text-center">Descuento</th>
+              <th class="text-space-nowarp text-center">Inpuestos</th>
+              <th class="text-space-nowarp text-center"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @if (!isVisibledTable) {
+            <tr>
+              <td colspan="9" class="text-center">
+                <p class="is-size-6">No se encontraron registros</p>
+              </td>
+            </tr>
+
+            } @else { @for (item of listOrder; track $index) {
+            <tr>
+              <td class="text-space-nowarp text-center">{{ $index + 1 }}</td>
+              <td class="text-space-nowarp text-center">
+                {{ item.orderNumber }}
+              </td>
+              <td class="text-space-nowarp text-left">
+                {{ item.customer.companyName }}
+              </td>
+              <td class="text-space-nowarp text-center">
+                {{ item.totalAmount | number : "1.2-2" }}
+              </td>
+              <td class="text-space-nowarp text-center">
+                <span
+                  class="tag text-bold"
+                  [ngClass]="{
+                    'is-success': item.status === 'SHP',
+                    'is-link': item.status === 'PRP',
+                    'is-warning': item.status === 'PND',
+                    'is-info': item.status === 'DLV'
+                  }"
+                >
+                  {{
+                    item.status === "PND"
+                      ? "Pendiente"
+                      : item.status === "DLV"
+                      ? "Entregado"
+                      : item.status === "SHP"
+                      ? "Enviado"
+                      : item.status === "PRP"
+                      ? "Preparado"
+                      : "Firmado"
+                  }}
+                </span>
+              </td>
+              <td class="text-space-nowarp text-center">
+                {{ item.orderDate | date : "dd/MM/yyyy" }}
+              </td>
+              <td class="text-space-nowarp text-center">
+                {{ item.discount | number : "1.2-2" }}
+              </td>
+              <td class="text-space-nowarp text-center">
+                {{ item.taxAmount | number : "1.2-2" }}
+              </td>
+              <td class="text-space-nowarp text-center">
+                <a
+                  class="button is-small is-link mx-1"
+                  title="Editar orden"
+                  (click)="editarOrden(item)"
+                >
+                  <span class="icon">
+                    <i class="fas fa-pencil"></i>
+                  </span>
+                </a>
+                <a
+                  class="button is-small is-danger mx-1"
+                  title="Eliminar orden"
+                  (click)="deleteOrder(item)"
+                >
+                  <span class="icon">
+                    <i class="fas fa-trash"></i>
+                  </span>
+                </a>
+              </td>
+            </tr>
+            } }
+          </tbody>
+        </table>
+        <nav
+          class="pagination is-centered is-small mt-4"
+          role="navigation"
+          aria-label="pagination"
+        >
+          <a
+            class="pagination-previous"
+            (click)="previousPage()"
+            [class.is-disabled]="currentPage === 1"
+          >
+            <span class="icon">
+              <i class="fas fa-chevron-left" aria-hidden="true"></i>
+            </span>
+            Atrás
+          </a>
+          <a
+            class="pagination-next"
+            (click)="nextPage()"
+            [class.is-disabled]="currentPage === totalPages()"
+          >
+            Siguiente
+            <span class="icon">
+              <i class="fas fa-chevron-right" aria-hidden="true"></i>
+            </span>
+          </a>
+          <ul class="pagination-list">
+            @for (item of [].constructor(totalPages()); track $index) {
+            <li>
+              <a
+                class="pagination-link"
+                [class.is-current]="currentPage === $index + 1"
+                (click)="goToPage($index + 1)"
+              >
+                <strong> {{ $index + 1 }}</strong>
+              </a>
+            </li>
+            }
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

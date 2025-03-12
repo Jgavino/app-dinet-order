@@ -1,0 +1,73 @@
+<div
+  class="container my-5 mt-5"
+  [ngClass]="{
+    'is-fluid': isMobile,
+    'is-max-widescreen': !isMobile,    
+  }"
+>
+  <div class="container is-flex v-centered h-centered pt-em-5">
+    <form [formGroup]="loginForm" class="box form-container mt-5">
+      <p class="title is-1 mb-6 mt-4">Login</p>
+      <div class="field mx-5 mt-4 text-center">
+        <label class="label">Usuario</label>
+        <div class="control has-icons-left has-icons-right">
+          <input
+            class="input is-rounded center-text-input"
+            type="text"
+            placeholder="N° de documento o Email"
+            formControlName="username"
+            (click)="selctAll($event)"
+            maxlength="60"
+            [ngClass]="{ 'is-invalid': isFieldInvalid('username') }"
+          />
+          <span class="icon is-left">
+            <i class="fas fa-user"></i>
+          </span>
+          <span class="icon is-right">
+            <i class="fas fa-check"></i>
+          </span>
+          @if (isFieldInvalid('username')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("username") }}</small>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="field mt-4 mx-5 text-center">
+        <label class="label">Contraseña</label>
+        <div class="control has-icons-left has-icons-right">
+          <input
+            id="password"
+            class="input is-rounded center-text-input"
+            type="password"
+            placeholder="Contraseña"
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': isFieldInvalid('password') }"
+          />
+          <span class="icon is-left">
+            <i class="fas fa-lock"></i>
+          </span>
+          <span class="icon is-right" (click)="showPassword()">
+            <i class="fas fa-check" (click)="showPassword()"></i>
+          </span>
+          @if (isFieldInvalid('password')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("password") }}</small>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="field mt-5 mx-5 text-center mb-5">
+        <div class="control">
+          <button
+            type="button"
+            class="button is-rounded is-primary is-fullwidth"
+            (click)="login()"
+          >
+            Ingresar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,235 @@
+<div class="header-content pt-60 pb-60 text-center">
+  <p class="title mb-2">Editar de Órdenes</p>
+</div>
+<div class="body-content pb-5 mb-4">
+  <div class="columns is-multiline mx-1">
+    <form [formGroup]="orderForm" class="box form-container">
+      <div class="columns is-multiline v-centered mx-1">
+        <div class="column is-3">
+          <nav class="level is-mobile mt-4">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Nro. de Orden</p>
+                <p class="title is-4">{{ orderNumber }}</p>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div class="field column is-2">
+          <label class="label">Descuento</label>
+          <p class="control has-icons-left has-icons-right ml-3">
+            <input
+              class="input"
+              type="number"
+              placeholder="Ingresa el descuento"
+              formControlName="discount"
+              [ngClass]="{ 'is-invalid': isFieldInvalid('discount') }"
+            />
+            <span class="icon is-left">
+              <i class="fas fa-percentage"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('discount')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("discount") }}</small>
+          </div>
+          }
+        </div>
+
+        <div class="field column is-2">
+          <label class="label">Impuestos</label>
+          <p class="control has-icons-left has-icons-right ml-3">
+            <input
+              class="input"
+              type="number"
+              placeholder="Ingresa el monto de impuestos"
+              formControlName="taxAmount"
+              [ngClass]="{ 'is-invalid': isFieldInvalid('taxAmount') }"
+            />
+            <span class="icon is-left">
+              <i class="fas fa-dollar-sign"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('taxAmount')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("taxAmount") }}</small>
+          </div>
+          }
+        </div>
+        <div class="column is-3">
+          <nav class="level is-mobile mt-4">
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Total</p>
+                <p class="title is-4">{{ totalAmount | number : "1.2-2" }}</p>
+              </div>
+            </div>
+          </nav>
+        </div>
+        <div class="field column is-3">
+          <label class="label">Estado</label>
+          <p class="control has-icons has-icons-left is-expanded">
+            <span class="select is-fullwidth">
+              <select
+                title="Estados de la Orden"
+                formControlName="status"
+                [ngClass]="{ 'is-invalid': isFieldInvalid('status') }"
+              >
+                @for (item of statusOrder; track $index) {
+                <option [value]="item.code">
+                  {{ item.code }} - {{ item.description }}
+                </option>
+                }
+              </select>
+            </span>
+            <span class="icon is-left">
+              <i class="fas fa-user"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('status')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("status") }}</small>
+          </div>
+          }
+        </div>
+        <div class="field column is-3">
+          <label class="label">Método de Envío</label>
+          <p class="control has-icons-left has-icons-right ml-3">
+            <input
+              class="input"
+              type="text"
+              placeholder="Ingresa el método de envío"
+              formControlName="shippingMethod"
+              [ngClass]="{ 'is-invalid': isFieldInvalid('shippingMethod') }"
+            />
+            <span class="icon is-left">
+              <i class="fas fa-truck"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('shippingMethod')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("shippingMethod") }}</small>
+          </div>
+          }
+        </div>
+        <div class="field column is-3">
+          <label class="label">Dirección de Envío</label>
+          <p class="control has-icons-left has-icons-right ml-3">
+            <input
+              class="input"
+              type="text"
+              placeholder="Ingresa la dirección de envío"
+              formControlName="shippingAddress"
+              [ngClass]="{ 'is-invalid': isFieldInvalid('shippingAddress') }"
+            />
+            <span class="icon is-left">
+              <i class="fas fa-map-marker-alt"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('shippingAddress')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{
+              getErrorMessage("shippingAddress")
+            }}</small>
+          </div>
+          }
+        </div>
+        <div class="field column is-3">
+          <label class="label">Dirección de Facturación</label>
+          <p class="control has-icons-left has-icons-right ml-3">
+            <input
+              class="input"
+              type="text"
+              placeholder="Ingresa la dirección de facturación"
+              formControlName="billingAddress"
+              [ngClass]="{ 'is-invalid': isFieldInvalid('billingAddress') }"
+            />
+            <span class="icon is-left">
+              <i class="fas fa-map-marker-alt"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('billingAddress')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("billingAddress") }}</small>
+          </div>
+          }
+        </div>
+      </div>
+      <div class="columns v-centered mx-1 mb-5">
+        <div class="field is-grouped">
+          <p class="control">
+            <button class="button is-link" (click)="openOrderDetailDialog()">
+              Agregar detalle
+            </button>
+          </p>
+        </div>
+      </div>
+      <div class="columns v-centered mx-1 my-5">
+        <div class="colums is-12">
+          <div class="table-wrapper has-mobile-cards">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th class="text-space-nowarp text-center">#</th>
+                  <th class="text-space-nowarp text-center">Producto</th>
+                  <th class="text-space-nowarp text-center">Cantidad</th>
+                  <th class="text-space-nowarp text-center">Precio</th>
+                  <th class="text-space-nowarp text-left">Descripción</th>
+                  <th class="text-space-nowarp text-left"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of listDetailOrder; track $index) {
+                <tr>
+                  <td class="text-space-nowarp text-center">
+                    {{ $index + 1 }}
+                  </td>
+                  <td
+                    class="text-space-nowarp text-center"
+                    title="{{ item.product.description }}"
+                  >
+                    {{ item.product.name }}
+                  </td>
+                  <td class="text-space-nowarp text-center">
+                    {{ item.quantity }}
+                  </td>
+                  <td class="text-space-nowarp text-center">
+                    {{ item.product.unitPrice | number : "1.2-2" }}
+                  </td>
+                  <td class="text-space-nowarp text-left">
+                    {{ item.product.description }}
+                  </td>
+                  <td class="text-space-nowarp text-center">
+                    <a
+                      class="button is-small is-danger mx-1"
+                      title="Eliminar producto"
+                      (click)="deleteDetailOrder(item)"
+                    >
+                      <span class="icon">
+                        <i class="fas fa-trash"></i>
+                      </span>
+                    </a>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="columns v-centered mx-1 my-50">
+        <div class="field is-grouped">
+          <p class="control">
+            <button
+              class="button is-primary"
+              (click)="updateOrder()"
+              [disabled]="listDetailOrder.length === 0"
+            >
+              Actualizar Orden
+            </button>
+          </p>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

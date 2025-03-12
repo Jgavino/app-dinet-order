@@ -1,0 +1,37 @@
+tbody > tr {
+  font-size: 14px;
+
+  &:hover {
+    background-color: #c2c2c2;
+  }
+}
+
+thead > tr {
+  font-size: 14.5px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.mb-e-10 {
+  margin-bottom: 4em !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+.mt-100 {
+  margin-top: 2.7em;
+}
+
+.date {
+  font-size: 1em;
+  color: #4e4e4e;
+  background-color: #f9f9f9;
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  width: 100%;
+}

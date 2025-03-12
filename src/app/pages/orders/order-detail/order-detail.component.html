@@ -1,0 +1,66 @@
+<div class="modal-card px-5 py-5" [ngClass]="{ 'v-centered': isMobile }">
+  <section class="modal-card-head mb-5 mt-1">
+    <p class="modal-card-title title is-5 text-center text-bold">
+      {{ "Agerar Detalle de Ordern" }}
+    </p>
+  </section>
+  <section class="modal-card-body">
+    <form [formGroup]="orderDetailForm" class="form-container">
+      <div class="columns is-multiline v-centered mx-1">
+        <div class="field column is-12">
+          <label class="label">Producto</label>
+          <p class="control has-icons has-icons-left is-expanded">
+            <span class="select is-fullwidth">
+              <select
+                title="Producto"
+                formControlName="productId"
+                [ngClass]="{ 'is-invalid': isFieldInvalid('productId') }"
+              >
+                @for (item of listProducts; track $index) {
+                <option [value]="item.id">
+                  {{ item.code }} - {{ item.name }}
+                </option>
+                }
+              </select>
+            </span>
+            <span class="icon is-left">
+              <i class="fas fa-clipboard"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('productId')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("productId") }}</small>
+          </div>
+          }
+        </div>
+        <div class="field column is-12">
+          <label class="label">Cantidad</label>
+          <p class="control has-icons-left has-icons-right">
+            <input
+              class="input"
+              type="number"
+              placeholder="Ingresa la cantidad"
+              formControlName="quantity"
+              [ngClass]="{ 'is-invalid': isFieldInvalid('quantity') }"
+            />
+            <span class="icon is-left">
+              <i class="fas fa-cubes"></i>
+            </span>
+          </p>
+          @if (isFieldInvalid('quantity')) {
+          <div class="invalid-feedback half-width-centered">
+            <small class="error">{{ getErrorMessage("quantity") }}</small>
+          </div>
+          }
+        </div>
+      </div>
+    </form>
+    <div class="field is-grouped v-centered mt-5">
+      <p class="control">
+        <button class="button is-link" (click)="closeModal()">
+          <span>Agregar</span>
+        </button>
+      </p>
+    </div>
+  </section>
+</div>

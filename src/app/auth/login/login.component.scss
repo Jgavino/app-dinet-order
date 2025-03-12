@@ -1,0 +1,28 @@
+.pt-em-5 {
+  padding-top: 5em !important;
+}
+
+.form-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+img {
+  max-width: 20%;
+}
+
+@media screen and (max-width: 435px) {
+  img {
+    max-width: 20%;
+  }
+  .form-container {
+    max-width: 350px;
+    margin: 0 auto;
+  }
+}
+
+.custom-dialog-container {
+  .mat-dialog-container {
+    border-radius: 0; // Quita el borde redondeado
+  }
+}
